@@ -6,6 +6,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const dotenv = require("dotenv");
+dotenv.config();
+
+const { EMAIL_SERVICE_ENDPOINT, EMAIL_SERVICE_API_KEY, PORT } = process.env;
+
 // Endpoint to handle contact form
 app.post("/send-email", async (req, res) => {
   const { name, email, phone, message } = req.body;
@@ -14,8 +19,8 @@ app.post("/send-email", async (req, res) => {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "lakestonetilesmkt@gmail.com",
-        pass: "upzd ykhe fgkw fqln",
+        user: EMAIL_SERVICE_ENDPOINT,
+        pass: EMAIL_SERVICE_API_KEY ,
       },
     });
 
@@ -41,7 +46,6 @@ app.post("/send-email", async (req, res) => {
   }
 });
 
-const PORT = 5000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running...`);
+  console.log(`🚀 Server running on port ${PORT || 5000}...`);
 });
